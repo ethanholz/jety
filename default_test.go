@@ -118,6 +118,7 @@ func ManagerSubTest(t *testing.T) {
 	if boolNonExistentValue != false {
 		t.Error("boolNonExistentValue should be false")
 	}
+
 	stringList := GetStringSlice("string_list")
 	if stringList[0] != "added" {
 		t.Error("stringList[0] should be added")
@@ -128,6 +129,7 @@ func ManagerSubTest(t *testing.T) {
 	if stringList[2] != "list" {
 		t.Error("stringList[2] should be list")
 	}
+
 	durationValue := GetDuration("duration")
 	if durationValue != 5*time.Second {
 		t.Error("durationValue should be 5s")
@@ -160,6 +162,15 @@ func ManagerSubTest(t *testing.T) {
 		t.Error("mapVal['b'] should be other")
 	}
 
+	Set("stringMap", map[string]any{"a": 1, "b": "other"})
+	mapVal = GetStringMap("stringMap")
+	if mapVal["a"] != 1 {
+		t.Errorf("mapVal['a'] should be 1 but is %v", mapVal["a"])
+	}
+	if mapVal["b"] != "other" {
+		t.Error("mapVal['b'] should be other")
+	}
+
 	SetDefault("default", "value")
 	defaultValue := GetString("default")
 	if defaultValue != "value" {
@@ -185,5 +196,22 @@ func ManagerSubTest(t *testing.T) {
 	setValue := GetString("set")
 	if setValue != "value" {
 		t.Error("setValue should be value")
+	}
+
+	Set("slice", []string{"a", "b", "c"})
+	sliceValue := GetStringSlice("slice")
+	if len(sliceValue) == 0 {
+		t.Error("sliceValue should not be empty")
+	} else {
+		if sliceValue[0] != "a" {
+			t.Error("sliceValue[0] should be a")
+		}
+		if sliceValue[1] != "b" {
+			t.Error("sliceValue[1] should be b")
+		}
+		if sliceValue[2] != "c" {
+			t.Error("sliceValue[2] should be c")
+		}
+
 	}
 }
